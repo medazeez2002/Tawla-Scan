@@ -1,0 +1,173 @@
+import { MenuItem } from '../context/CartContext';
+
+export const menuItems: MenuItem[] = [
+  // Coffee
+  {
+    id: 'espresso',
+    name: 'Espresso',
+    description: 'Rich and bold Italian espresso',
+    price: 2.50,
+    category: 'coffee',
+    image: 'https://images.unsplash.com/photo-1645445644664-8f44112f334c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlc3ByZXNzbyUyMGNvZmZlZSUyMGN1cHxlbnwxfHx8fDE3NzI5OTMzNTd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  {
+    id: 'cappuccino',
+    name: 'Cappuccino',
+    description: 'Espresso with steamed milk and foam',
+    price: 3.50,
+    category: 'coffee',
+    image: 'https://images.unsplash.com/photo-1667388363683-a07bbf0c84b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYXBwdWNjaW5vJTIwbGF0dGUlMjBhcnR8ZW58MXx8fHwxNzczMDQ1MTk5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  {
+    id: 'latte',
+    name: 'Caffè Latte',
+    description: 'Smooth espresso with steamed milk',
+    price: 3.75,
+    category: 'coffee',
+    image: 'https://images.unsplash.com/photo-1667388363683-a07bbf0c84b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYXBwdWNjaW5vJTIwbGF0dGUlMjBhcnR8ZW58MXx8fHwxNzczMDQ1MTk5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  {
+    id: 'americano',
+    name: 'Americano',
+    description: 'Espresso with hot water',
+    price: 2.75,
+    category: 'coffee',
+    image: 'https://images.unsplash.com/photo-1645445644664-8f44112f334c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlc3ByZXNzbyUyMGNvZmZlZSUyMGN1cHxlbnwxfHx8fDE3NzI5OTMzNTd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  {
+    id: 'flat-white',
+    name: 'Flat White',
+    description: 'Velvety microfoam with double espresso',
+    price: 3.60,
+    category: 'coffee',
+    image: 'https://images.unsplash.com/photo-1667388363683-a07bbf0c84b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYXBwdWNjaW5vJTIwbGF0dGUlMjBhcnR8ZW58MXx8fHwxNzczMDQ1MTk5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  {
+    id: 'mocha',
+    name: 'Mocha',
+    description: 'Chocolate espresso with steamed milk',
+    price: 4.00,
+    category: 'coffee',
+    image: 'https://images.unsplash.com/photo-1667388363683-a07bbf0c84b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYXBwdWNjaW5vJTIwbGF0dGUlMjBhcnR8ZW58MXx8fHwxNzczMDQ1MTk5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  
+  // Tea
+  {
+    id: 'english-breakfast',
+    name: 'English Breakfast',
+    description: 'Classic black tea blend',
+    price: 2.50,
+    category: 'tea',
+    image: 'https://images.unsplash.com/photo-1513021644609-692e9ecb6b4f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbmdsaXNoJTIwYnJlYWtmYXN0JTIwdGVhfGVufDF8fHx8MTc3MzA2MzQwOXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  {
+    id: 'earl-grey',
+    name: 'Earl Grey',
+    description: 'Bergamot-infused black tea',
+    price: 2.50,
+    category: 'tea',
+    image: 'https://images.unsplash.com/photo-1513021644609-692e9ecb6b4f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbmdsaXNoJTIwYnJlYWtmYXN0JTIwdGVhfGVufDF8fHx8MTc3MzA2MzQwOXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  {
+    id: 'green-tea',
+    name: 'Green Tea',
+    description: 'Light and refreshing green tea',
+    price: 2.50,
+    category: 'tea',
+    image: 'https://images.unsplash.com/photo-1513021644609-692e9ecb6b4f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbmdsaXNoJTIwYnJlYWtmYXN0JTIwdGVhfGVufDF8fHx8MTc3MzA2MzQwOXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  {
+    id: 'peppermint',
+    name: 'Peppermint Tea',
+    description: 'Refreshing herbal infusion',
+    price: 2.25,
+    category: 'tea',
+    image: 'https://images.unsplash.com/photo-1513021644609-692e9ecb6b4f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbmdsaXNoJTIwYnJlYWtmYXN0JTIwdGVhfGVufDF8fHx8MTc3MzA2MzQwOXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  
+  // Food
+  {
+    id: 'croissant',
+    name: 'Butter Croissant',
+    description: 'Flaky French pastry',
+    price: 2.50,
+    category: 'food',
+    image: 'https://images.unsplash.com/photo-1712723247648-64a03ba7c333?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm9pc3NhbnQlMjBwYXN0cnl8ZW58MXx8fHwxNzcyOTg5ODEyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  {
+    id: 'pain-au-chocolat',
+    name: 'Pain au Chocolat',
+    description: 'Chocolate-filled croissant',
+    price: 3.00,
+    category: 'food',
+    image: 'https://images.unsplash.com/photo-1712723247648-64a03ba7c333?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm9pc3NhbnQlMjBwYXN0cnl8ZW58MXx8fHwxNzcyOTg5ODEyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  {
+    id: 'blueberry-muffin',
+    name: 'Blueberry Muffin',
+    description: 'Freshly baked with wild blueberries',
+    price: 2.75,
+    category: 'food',
+    image: 'https://images.unsplash.com/photo-1607958996333-41aef7caefaa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibHVlYmVycnklMjBtdWZmaW58ZW58MXx8fHwxNzcyOTc2NzA0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  {
+    id: 'avocado-toast',
+    name: 'Avocado Toast',
+    description: 'Smashed avocado on sourdough',
+    price: 6.50,
+    category: 'food',
+    image: 'https://images.unsplash.com/photo-1609158087148-3bae840bcfda?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhdm9jYWRvJTIwdG9hc3QlMjBicmVha2Zhc3R8ZW58MXx8fHwxNzczMDExODM3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  {
+    id: 'bacon-roll',
+    name: 'Bacon Roll',
+    description: 'Crispy bacon in a soft roll',
+    price: 4.50,
+    category: 'food',
+    image: 'https://images.unsplash.com/photo-1609158087148-3bae840bcfda?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhdm9jYWRvJTIwdG9hc3QlMjBicmVha2Zhc3R8ZW58MXx8fHwxNzczMDExODM3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+  {
+    id: 'sausage-roll',
+    name: 'Sausage Roll',
+    description: 'Traditional British sausage roll',
+    price: 3.50,
+    category: 'food',
+    image: 'https://images.unsplash.com/photo-1712723247648-64a03ba7c333?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm9pc3NhbnQlMjBwYXN0cnl8ZW58MXx8fHwxNzcyOTg5ODEyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  },
+
+  // Milkshakes
+  {
+    id: 'vanilla-milkshake',
+    name: 'Vanilla Milkshake',
+    description: 'Creamy vanilla milkshake topped with whipped cream',
+    price: 4.25,
+    category: 'milkshake',
+    image: 'https://images.unsplash.com/photo-1582294867295-4e042a1a0ae1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+  },
+  {
+    id: 'chocolate-milkshake',
+    name: 'Chocolate Milkshake',
+    description: 'Rich chocolate shake with chocolate syrup',
+    price: 4.50,
+    category: 'milkshake',
+    image: 'https://images.unsplash.com/photo-1606312610503-0b845723c2fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+  },
+
+  // Cocktails
+  {
+    id: 'classic-mojito',
+    name: 'Classic Mojito',
+    description: 'Refreshing rum cocktail with mint and lime',
+    price: 7.00,
+    category: 'cocktail',
+    image: 'https://images.unsplash.com/photo-1552960394-3559c5d35ee4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+  },
+  {
+    id: 'cosmopolitan',
+    name: 'Cosmopolitan',
+    description: 'Vodka-based cocktail with cranberry and lime',
+    price: 7.50,
+    category: 'cocktail',
+    image: 'https://images.unsplash.com/photo-1610849525687-b623924dd4eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+  },
+];

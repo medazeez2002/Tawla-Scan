@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: tawla-scan-api
+    env: node
+    plan: free
+    rootDir: .
+    buildCommand: npm install
+    startCommand: npm run server
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_HOST
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: SUPER_ADMIN_PASS
+        sync: false
+      - key: ADMIN_PASS
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: KONNECT_API_KEY
+        sync: false
+      - key: KONNECT_RECEIVER_WALLET_ID
+        sync: false
+      - key: KONNECT_API_BASE_URL
+        sync: false
+      - key: KONNECT_CURRENCY
+        sync: false
+      - key: KONNECT_PAYMENT_LIFESPAN
+        sync: false
