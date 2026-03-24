@@ -4,12 +4,14 @@ services:
     env: node
     plan: free
     rootDir: .
-    buildCommand: npm install
-    startCommand: npm run server
+    buildCommand: npm install --no-audit --no-fund express mysql2 cors dotenv multer nodemailer
+    startCommand: node server.js
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=384
       - key: DB_HOST
         sync: false
       - key: DB_USER
