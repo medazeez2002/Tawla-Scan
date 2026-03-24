@@ -3,9 +3,9 @@ services:
     name: tawla-scan-api
     env: node
     plan: free
-    rootDir: .
-    buildCommand: npm install --no-audit --no-fund express mysql2 cors dotenv multer nodemailer
-    startCommand: node server.js
+    rootDir: api
+    buildCommand: npm install --omit=dev --no-audit --no-fund
+    startCommand: npm start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
