@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
   # Digital Cafe Menu
 
@@ -54,3 +55,6 @@
     - Free domain option: keep platform subdomains.
     - Custom domain: buy domain, then connect it in Vercel (frontend) and optionally Render (API).
   
+=======
+# Tawla-Scan
+>>>>>>> 6be5ddc89277ad6da88a9ebc7d713eb22f8ccc2c
