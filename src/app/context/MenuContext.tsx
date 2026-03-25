@@ -144,8 +144,6 @@ export function MenuProvider({ children }: { children: ReactNode }) {
       ...item,
       id: `item-${Date.now()}`,
     };
-    setMenuItems(prev => sortMenuItems([...prev, newItem]));
-
     void (async () => {
       try {
         await api.createMenuItem(newItem);
