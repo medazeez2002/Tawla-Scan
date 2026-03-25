@@ -3,15 +3,13 @@ services:
     name: tawla-scan-api
     env: node
     plan: free
-    rootDir: api
-    buildCommand: npm install --omit=dev --no-audit --no-fund
-    startCommand: npm start
+    rootDir: .
+    buildCommand: npm install
+    startCommand: npm run server
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
-      - key: NODE_OPTIONS
-        value: --max-old-space-size=384
       - key: DB_HOST
         sync: false
       - key: DB_USER

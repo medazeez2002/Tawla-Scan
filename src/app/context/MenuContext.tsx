@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { MenuItem } from './CartContext';
-import { menuItems as initialMenuItems } from '../data/menuItems';
 import { api } from '../../lib/api';
 
 const DEFAULT_MENU_IMAGE = 'https://via.placeholder.com/800x600.png?text=Menu+Item';
@@ -64,7 +63,7 @@ interface MenuContextType {
 const MenuContext = createContext<MenuContextType | undefined>(undefined);
 
 export function MenuProvider({ children }: { children: ReactNode }) {
-  const [menuItems, setMenuItems] = useState<MenuItem[]>(() => sortMenuItems(initialMenuItems));
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [bundles, setBundles] = useState<Bundle[]>([]);
   const [offers, setOffers] = useState<Offer[]>([]);
 
@@ -81,12 +80,6 @@ export function MenuProvider({ children }: { children: ReactNode }) {
         isBestSeller: !!item.is_best_seller,
         isNew: !!item.is_new,
       }));
-
-      // Avoid wiping the UI when backend menu is temporarily empty/unavailable.
-      if (mapped.length === 0) {
-        setMenuItems((previous) => (previous.length > 0 ? previous : sortMenuItems(initialMenuItems)));
-        return;
-      }
 
       setMenuItems(sortMenuItems(mapped));
     } catch (error) {

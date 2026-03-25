@@ -1,29 +1,39 @@
 import { createBrowserRouter } from "react-router";
-import { MenuPage } from "./pages/MenuPage";
-import { CheckoutPage } from "./pages/CheckoutPage";
-import { OrderConfirmationPage } from "./pages/OrderConfirmationPage";
-import { RestaurantDashboard } from "./pages/RestaurantDashboard";
-import { NotFoundPage } from "./pages/NotFoundPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    Component: MenuPage,
+    lazy: async () => {
+      const module = await import("./pages/MenuPage");
+      return { Component: module.MenuPage };
+    },
   },
   {
     path: "/checkout",
-    Component: CheckoutPage,
+    lazy: async () => {
+      const module = await import("./pages/CheckoutPage");
+      return { Component: module.CheckoutPage };
+    },
   },
   {
     path: "/confirmation",
-    Component: OrderConfirmationPage,
+    lazy: async () => {
+      const module = await import("./pages/OrderConfirmationPage");
+      return { Component: module.OrderConfirmationPage };
+    },
   },
   {
     path: "/restaurant",
-    Component: RestaurantDashboard,
+    lazy: async () => {
+      const module = await import("./pages/RestaurantDashboard");
+      return { Component: module.RestaurantDashboard };
+    },
   },
   {
     path: "*",
-    Component: NotFoundPage,
+    lazy: async () => {
+      const module = await import("./pages/NotFoundPage");
+      return { Component: module.NotFoundPage };
+    },
   },
 ]);
