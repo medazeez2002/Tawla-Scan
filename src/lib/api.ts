@@ -1,6 +1,9 @@
 // API service for MySQL backend communication
 const configuredApiUrl = String(import.meta.env.VITE_API_URL ?? '').trim();
-const resolvedApiUrl = configuredApiUrl || 'http://localhost:3002';
+const isLocalHost =
+  typeof window !== 'undefined' &&
+  /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname);
+const resolvedApiUrl = configuredApiUrl || (isLocalHost ? 'http://localhost:3002' : 'https://tawla-scan.onrender.com');
 const API_URL = resolvedApiUrl
   .replace(/^http:\/\/localhost:3001\b/i, 'http://localhost:3002')
   .replace(/^https?:\/\/127\.0\.0\.1:3001\b/i, 'http://127.0.0.1:3002');
