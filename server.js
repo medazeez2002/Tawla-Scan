@@ -9,6 +9,7 @@ import multer from 'multer';
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1);
 
 const uploadsRoot = path.join(process.cwd(), 'uploads');
 const menuImagesDir = path.join(uploadsRoot, 'menu-images');
@@ -273,7 +274,18 @@ function getFrontendBaseUrl(req) {
 }
 
 function getRequestBaseUrl(req) {
-  return `${req.protocol}://${req.get('host')}`;
+  const configuredPublicUrl = String(process.env.BACKEND_PUBLIC_URL || '').trim();
+  if (configuredPublicUrl && /^https?:\/\//i.test(configuredPublicUrl)) {
+    return configuredPublicUrl.replace(/\/+$/, '');
+  }
+
+  const forwardedProtoHeader = req.headers['x-forwarded-proto'];
+  const forwardedProto = Array.isArray(forwardedProtoHeader)
+    ? forwardedProtoHeader[0]
+    : String(forwardedProtoHeader || '').split(',')[0].trim();
+  const protocol = forwardedProto || req.protocol || 'https';
+
+  return `${protocol}://${req.get('host')}`;
 }
 
 function normalizePublicAssetUrl(imageUrl, req) {
@@ -635,7 +647,7 @@ app.post('/api/uploads/menu-image', (req, res) => {
       return res.status(400).json({ error: 'Image file is required' });
     }
 
-    const url = `${req.protocol}://${req.get('host')}/uploads/menu-images/${req.file.filename}`;
+    const url = `${getRequestBaseUrl(req)}/uploads/menu-images/${req.file.filename}`;
     return res.status(201).json({ url });
   });
 });
@@ -653,7 +665,7 @@ app.post('/api/uploads/offer-carousel', (req, res) => {
       return res.status(400).json({ error: 'Carousel image file is required' });
     }
 
-    const url = `${req.protocol}://${req.get('host')}/uploads/offer-carousel/${req.file.filename}`;
+    const url = `${getRequestBaseUrl(req)}/uploads/offer-carousel/${req.file.filename}`;
     return res.status(201).json({ url });
   });
 });
