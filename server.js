@@ -92,12 +92,17 @@ app.get('/', (_req, res) => {
 });
 
 // Create connection pool
+const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_PORT = Number(process.env.DB_PORT || 3306);
+console.log(`[DB] Connecting to ${DB_HOST}:${DB_PORT} / ${process.env.DB_NAME || 'tawla_scan'} as ${process.env.DB_USER || 'root'}`);
+
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  port: Number(process.env.DB_PORT || 3306),
+  host: DB_HOST,
+  port: DB_PORT,
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'tawla_scan',
+  ssl: DB_HOST === 'localhost' ? undefined : { rejectUnauthorized: false },
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
@@ -2184,16 +2189,18 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3001;
 
 async function startServer() {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`📊 MySQL Database: ${process.env.DB_NAME || 'tawla_scan'}`);
+  });
+
   try {
     await ensureSchema();
     await loadRuntimeSettings();
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
-      console.log(`📊 MySQL Database: ${process.env.DB_NAME || 'tawla_scan'}`);
-    });
+    console.log('[DB] Schema and settings initialized successfully.');
   } catch (error) {
     console.error('Failed to initialize database schema:', error);
-    process.exit(1);
+    console.error('[DB] Server will keep running but DB-dependent routes may fail until DB is reachable.');
   }
 }
 
