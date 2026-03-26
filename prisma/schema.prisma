@@ -1,0 +1,127 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+model menu_items {
+  id           String   @id @db.VarChar(50)
+  name         String   @db.VarChar(255)
+  description  String?  @db.Text
+  price        Decimal  @db.Decimal(10, 2)
+  category     String   @db.VarChar(50)
+  image_url    String?  @db.VarChar(500)
+  is_best_seller Boolean @default(false)
+  is_new       Boolean  @default(false)
+  available    Boolean  @default(true)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  order_items  order_items[]
+  offer_items  offer_items[]
+  bundle_items bundle_items[]
+  menu_audit_logs menu_audit_logs[] @relation("MenuAuditLogsToMenuItem")
+}
+
+model orders {
+  id             String   @id @db.VarChar(50)
+  order_number   Int      @unique @default(autoincrement())
+  total          Decimal  @db.Decimal(10, 2)
+  status         String   @default("pending")
+  table_number   Int?
+  payment_method String?
+  payment_provider String?
+  payment_reference String?
+  payment_status String?
+  timestamp      DateTime @default(now())
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  order_items    order_items[]
+}
+
+model cafe_tables {
+  id           String   @id @db.VarChar(50)
+  table_number Int      @unique
+  qr_token     String   @unique @db.VarChar(100)
+  active       Boolean  @default(true)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+}
+
+model order_items {
+  id           String   @id @db.VarChar(50)
+  order_id     String
+  menu_item_id String
+  quantity     Int
+  price        Decimal  @db.Decimal(10, 2)
+  created_at   DateTime @default(now())
+  orders       orders   @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  menu_items   menu_items @relation(fields: [menu_item_id], references: [id])
+}
+
+model offers {
+  id           String   @id @db.VarChar(50)
+  type         String   @default("percentage")
+  value        Decimal  @default(0) @db.Decimal(10, 2)
+  description  String   @db.VarChar(255)
+  image_url    String?  @db.VarChar(500)
+  active       Boolean  @default(true)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  offer_items  offer_items[]
+}
+
+model offer_items {
+  id           String   @id @db.VarChar(50)
+  offer_id     String
+  menu_item_id String
+  offers       offers   @relation(fields: [offer_id], references: [id], onDelete: Cascade)
+  menu_items   menu_items @relation(fields: [menu_item_id], references: [id], onDelete: Cascade)
+  @@unique([offer_id, menu_item_id])
+}
+
+model bundles {
+  id           String   @id @db.VarChar(50)
+  name         String   @db.VarChar(255)
+  description  String?
+  price        Decimal  @db.Decimal(10, 2)
+  original_price Decimal @db.Decimal(10, 2)
+  image_url    String?  @db.VarChar(500)
+  active       Boolean  @default(true)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  bundle_items bundle_items[]
+}
+
+model bundle_items {
+  id           String   @id @db.VarChar(50)
+  bundle_id    String
+  menu_item_id String
+  bundles      bundles  @relation(fields: [bundle_id], references: [id], onDelete: Cascade)
+  menu_items   menu_items @relation(fields: [menu_item_id], references: [id], onDelete: Cascade)
+  @@unique([bundle_id, menu_item_id])
+}
+
+model app_settings {
+  setting_key  String   @id @db.VarChar(100)
+  setting_value String
+  updated_at   DateTime @updatedAt
+}
+
+model menu_audit_logs {
+  id             BigInt   @id @default(autoincrement())
+  event_type     String   @db.VarChar(40)
+  menu_item_id   String
+  menu_item_name String   @db.VarChar(255)
+  changed_fields String?
+  previous_values String?
+  new_values     String?
+  created_at     DateTime @default(now())
+  menu_items     menu_items @relation("MenuAuditLogsToMenuItem", fields: [menu_item_id], references: [id])
+}
