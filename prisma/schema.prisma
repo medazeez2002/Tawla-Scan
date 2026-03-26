@@ -10,6 +10,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 model menu_items {
   id           String   @id @db.VarChar(50)
