@@ -630,12 +630,14 @@ app.get('/api/health', (req, res) => {
 app.post('/api/uploads/menu-image', (req, res) => {
   menuImageUpload.single('image')(req, res, (error) => {
     if (error) {
+      console.error('Upload error:', error); // Log upload errors
       if (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') {
         return res.status(400).json({ error: 'Image file is too large. Max size is 10MB.' });
       }
       return res.status(400).json({ error: error.message || 'Failed to upload image' });
     }
     if (!req.file) {
+      console.error('No file received:', { body: req.body, files: req.files, file: req.file }); // Log missing file info
       return res.status(400).json({ error: 'Image file is required' });
     }
     // Cloudinary URL is in req.file.path

@@ -242,7 +242,59 @@ export const api = {
 
     return payload.url;
   },
+  async uploadProfilePic(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append('image', file);
 
+    const url = `${API_URL}/api/uploads/profile-pic`;
+    console.log('Uploading to:', url);
+    console.log('File:', {
+      name: file.name,
+      size: file.size,
+      type: file.type,
+    });
+
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
+
+    const rawText = await response.text();
+    console.log('Upload status:', response.status);
+    console.log('Upload raw response:', rawText);
+
+    if (!response.ok) {
+      let errorMessage = 'Failed to upload profile picture';
+
+      try {
+        const payload = JSON.parse(rawText);
+        if (payload && typeof payload.error === 'string' && payload.error.trim()) {
+          errorMessage = payload.error;
+        } else if (payload && typeof payload.message === 'string' && payload.message.trim()) {
+          errorMessage = payload.message;
+        }
+      } catch {
+        if (rawText.trim()) {
+          errorMessage = rawText;
+        }
+      }
+
+      throw new Error(errorMessage);
+    }
+
+    let payload: any;
+    try {
+      payload = JSON.parse(rawText);
+    } catch {
+      throw new Error('Server did not return valid JSON');
+    }
+
+    if (!payload || typeof payload.url !== 'string' || !payload.url.trim()) {
+      throw new Error('Upload did not return a valid image URL');
+    }
+
+    return payload.url;
+  },
   // Offers
   async getOffers() {
     const response = await fetch(`${API_URL}/api/offers`);
