@@ -1,0 +1,13 @@
+{
+  "bundles": [
+    {
+      "name": "Breakfast Combo",
+      "description": "Coffee + Croissant",
+      "price": 8.5,
+      "original_price": 10,
+      "image_url": "bundle1.png",
+      "active": true,
+      "menu_item_ids": []
+    }
+  ]
+}

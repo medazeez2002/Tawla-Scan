@@ -4,7 +4,8 @@
     "Cold Coffee & Frappe",
     "Chocolate Drinks",
     "Fresh Drinks",
-    "Soft Drinks"
+    "Soft Drinks",
+    "Cakes"
   ],
   "menu_items": [
     {"name": "Espresso", "description": "Strong concentrated coffee shot made from finely ground beans.", "price": 2.5, "category": "Coffee", "image_url": "", "is_best_seller": false, "is_new": false, "available": true},

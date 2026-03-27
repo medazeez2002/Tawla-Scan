@@ -421,10 +421,11 @@ export function MenuManagement({ language }: MenuManagementProps) {
                     </SelectTrigger>
                     <SelectContent className="bg-white border-zinc-200">
                       <SelectItem value="coffee">{tx('Coffee', 'Cafe')}</SelectItem>
-                      <SelectItem value="tea">{tx('Tea', 'The')}</SelectItem>
-                      <SelectItem value="milkshake">{tx('Milkshake', 'Milkshake')}</SelectItem>
-                      <SelectItem value="cocktail">{tx('Cocktail', 'Cocktail')}</SelectItem>
-                      <SelectItem value="food">{tx('Food', 'Nourriture')}</SelectItem>
+                      <SelectItem value="cold-coffee-frappe">{tx('Cold Coffee & Frappe', 'Cafe Frappe')}</SelectItem>
+                      <SelectItem value="chocolate-drinks">{tx('Chocolate Drinks', 'Boissons Chocolat')}</SelectItem>
+                      <SelectItem value="fresh-drinks">{tx('Fresh Drinks', 'Boissons Fraiches')}</SelectItem>
+                      <SelectItem value="soft-drinks">{tx('Soft Drinks', 'Boissons Gazeuses')}</SelectItem>
+                      <SelectItem value="cakes">{tx('Cakes', 'Gateaux')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

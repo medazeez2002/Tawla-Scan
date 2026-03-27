@@ -1,0 +1,12 @@
+{
+  "offers": [
+    {
+      "type": "percentage",
+      "value": 10,
+      "description": "10% off all drinks",
+      "image_url": "offer1.png",
+      "active": true,
+      "menu_item_ids": []
+    }
+  ]
+}

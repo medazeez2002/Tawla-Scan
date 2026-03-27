@@ -5,124 +5,124 @@
 -- CREATE DATABASE IF NOT EXISTS tawla_scan;
 -- USE tawla_scan;
 
--- CREATE TABLE menu_items (
---   id VARCHAR(50) PRIMARY KEY,
---   name VARCHAR(255) NOT NULL,
---   description TEXT,
---   price DECIMAL(10, 2) NOT NULL,
---   category VARCHAR(50) NOT NULL,
---   image_url VARCHAR(500),
---   is_best_seller BOOLEAN DEFAULT false,
---   is_new BOOLEAN DEFAULT false,
---   available BOOLEAN DEFAULT true,
---   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
--- );
+CREATE TABLE IF NOT EXISTS menu_items (
+	id VARCHAR(50) PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	description TEXT,
+	price DECIMAL(10, 2) NOT NULL,
+	category VARCHAR(50) NOT NULL,
+	image_url VARCHAR(500),
+	is_best_seller BOOLEAN DEFAULT false,
+	is_new BOOLEAN DEFAULT false,
+	available BOOLEAN DEFAULT true,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
--- CREATE TABLE orders (
---   id VARCHAR(50) PRIMARY KEY,
---   order_number INT NOT NULL AUTO_INCREMENT UNIQUE,
---   total DECIMAL(10, 2) NOT NULL,
---   status ENUM('pending', 'preparing', 'ready', 'completed') DEFAULT 'pending',
---   table_number INT NULL,
---   payment_method VARCHAR(50) NULL,
---   payment_provider VARCHAR(50) NULL,
---   payment_reference VARCHAR(120) NULL,
---   payment_status VARCHAR(50) NULL,
---   timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
---   INDEX idx_status (status),
---   INDEX idx_table_number (table_number),
---   INDEX idx_payment_reference (payment_reference),
---   INDEX idx_timestamp (timestamp)
--- );
+CREATE TABLE IF NOT EXISTS orders (
+	id VARCHAR(50) PRIMARY KEY,
+	order_number INT NOT NULL AUTO_INCREMENT UNIQUE,
+	total DECIMAL(10, 2) NOT NULL,
+	status ENUM('pending', 'preparing', 'ready', 'completed') DEFAULT 'pending',
+	table_number INT NULL,
+	payment_method VARCHAR(50) NULL,
+	payment_provider VARCHAR(50) NULL,
+	payment_reference VARCHAR(120) NULL,
+	payment_status VARCHAR(50) NULL,
+	timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	INDEX idx_status (status),
+	INDEX idx_table_number (table_number),
+	INDEX idx_payment_reference (payment_reference),
+	INDEX idx_timestamp (timestamp)
+);
 
--- CREATE TABLE cafe_tables (
---   id VARCHAR(50) PRIMARY KEY,
---   table_number INT NOT NULL UNIQUE,
---   qr_token VARCHAR(100) NOT NULL UNIQUE,
---   active BOOLEAN DEFAULT true,
---   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
---   INDEX idx_table_registry_number (table_number)
--- );
+CREATE TABLE IF NOT EXISTS cafe_tables (
+	id VARCHAR(50) PRIMARY KEY,
+	table_number INT NOT NULL UNIQUE,
+	qr_token VARCHAR(100) NOT NULL UNIQUE,
+	active BOOLEAN DEFAULT true,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	INDEX idx_table_registry_number (table_number)
+);
 
--- CREATE TABLE order_items (
---   id VARCHAR(50) PRIMARY KEY,
---   order_id VARCHAR(50) NOT NULL,
---   menu_item_id VARCHAR(50) NOT NULL,
---   quantity INT NOT NULL,
---   price DECIMAL(10, 2) NOT NULL,
---   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---   FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
---   FOREIGN KEY (menu_item_id) REFERENCES menu_items(id),
---   INDEX idx_order_id (order_id)
--- );
+CREATE TABLE IF NOT EXISTS order_items (
+	id VARCHAR(50) PRIMARY KEY,
+	order_id VARCHAR(50) NOT NULL,
+	menu_item_id VARCHAR(50) NOT NULL,
+	quantity INT NOT NULL,
+	price DECIMAL(10, 2) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+	FOREIGN KEY (menu_item_id) REFERENCES menu_items(id),
+	INDEX idx_order_id (order_id)
+);
 
--- CREATE TABLE offers (
---   id VARCHAR(50) PRIMARY KEY,
---   type VARCHAR(20) NOT NULL DEFAULT 'percentage',
---   value DECIMAL(10, 2) NOT NULL DEFAULT 0,
---   description VARCHAR(255) NOT NULL,
---   image_url VARCHAR(500),
---   active BOOLEAN DEFAULT true,
---   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
--- );
+CREATE TABLE IF NOT EXISTS offers (
+	id VARCHAR(50) PRIMARY KEY,
+	type VARCHAR(20) NOT NULL DEFAULT 'percentage',
+	value DECIMAL(10, 2) NOT NULL DEFAULT 0,
+	description VARCHAR(255) NOT NULL,
+	image_url VARCHAR(500),
+	active BOOLEAN DEFAULT true,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
--- CREATE TABLE offer_items (
---   id VARCHAR(50) PRIMARY KEY,
---   offer_id VARCHAR(50) NOT NULL,
---   menu_item_id VARCHAR(50) NOT NULL,
---   FOREIGN KEY (offer_id) REFERENCES offers(id) ON DELETE CASCADE,
---   FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE,
---   INDEX idx_offer_id (offer_id),
---   INDEX idx_offer_menu_item (menu_item_id),
---   UNIQUE KEY uq_offer_item_pair (offer_id, menu_item_id)
--- );
+CREATE TABLE IF NOT EXISTS offer_items (
+	id VARCHAR(50) PRIMARY KEY,
+	offer_id VARCHAR(50) NOT NULL,
+	menu_item_id VARCHAR(50) NOT NULL,
+	FOREIGN KEY (offer_id) REFERENCES offers(id) ON DELETE CASCADE,
+	FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE,
+	INDEX idx_offer_id (offer_id),
+	INDEX idx_offer_menu_item (menu_item_id),
+	UNIQUE KEY uq_offer_item_pair (offer_id, menu_item_id)
+);
 
--- CREATE TABLE bundles (
---   id VARCHAR(50) PRIMARY KEY,
---   name VARCHAR(255) NOT NULL,
---   description TEXT,
---   price DECIMAL(10, 2) NOT NULL,
---   original_price DECIMAL(10, 2) NOT NULL,
---   image_url VARCHAR(500),
---   active BOOLEAN DEFAULT true,
---   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
--- );
+CREATE TABLE IF NOT EXISTS bundles (
+	id VARCHAR(50) PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	description TEXT,
+	price DECIMAL(10, 2) NOT NULL,
+	original_price DECIMAL(10, 2) NOT NULL,
+	image_url VARCHAR(500),
+	active BOOLEAN DEFAULT true,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
--- CREATE TABLE bundle_items (
---   id VARCHAR(50) PRIMARY KEY,
---   bundle_id VARCHAR(50) NOT NULL,
---   menu_item_id VARCHAR(50) NOT NULL,
---   FOREIGN KEY (bundle_id) REFERENCES bundles(id) ON DELETE CASCADE,
---   FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE,
---   INDEX idx_bundle_id (bundle_id),
---   INDEX idx_bundle_menu_item (menu_item_id),
---   UNIQUE KEY uq_bundle_item_pair (bundle_id, menu_item_id)
--- );
+CREATE TABLE IF NOT EXISTS bundle_items (
+	id VARCHAR(50) PRIMARY KEY,
+	bundle_id VARCHAR(50) NOT NULL,
+	menu_item_id VARCHAR(50) NOT NULL,
+	FOREIGN KEY (bundle_id) REFERENCES bundles(id) ON DELETE CASCADE,
+	FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE,
+	INDEX idx_bundle_id (bundle_id),
+	INDEX idx_bundle_menu_item (menu_item_id),
+	UNIQUE KEY uq_bundle_item_pair (bundle_id, menu_item_id)
+);
 
--- CREATE TABLE app_settings (
---   setting_key VARCHAR(100) PRIMARY KEY,
---   setting_value TEXT NOT NULL,
---   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
--- );
+CREATE TABLE IF NOT EXISTS app_settings (
+	setting_key VARCHAR(100) PRIMARY KEY,
+	setting_value TEXT NOT NULL,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
--- CREATE TABLE menu_audit_logs (
---   id BIGINT PRIMARY KEY AUTO_INCREMENT,
---   event_type VARCHAR(40) NOT NULL,
---   menu_item_id VARCHAR(50) NOT NULL,
---   menu_item_name VARCHAR(255) NOT NULL,
---   changed_fields TEXT,
---   previous_values TEXT,
---   new_values TEXT,
---   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---   INDEX idx_menu_audit_created_at (created_at),
---   INDEX idx_menu_audit_item_id (menu_item_id)
--- );
+CREATE TABLE IF NOT EXISTS menu_audit_logs (
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	event_type VARCHAR(40) NOT NULL,
+	menu_item_id VARCHAR(50) NOT NULL,
+	menu_item_name VARCHAR(255) NOT NULL,
+	changed_fields TEXT,
+	previous_values TEXT,
+	new_values TEXT,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	INDEX idx_menu_audit_created_at (created_at),
+	INDEX idx_menu_audit_item_id (menu_item_id)
+);
 --
 -- [NOTE] For production, use a migration tool (e.g., Prisma, Knex, Sequelize) or manual ALTER TABLE scripts for schema changes. Do not run this file automatically on every deploy.
 --

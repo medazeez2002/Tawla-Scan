@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useSearchParams } from 'react-router';
-import { Coffee, Leaf, IceCream, Martini, Utensils, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Coffee, Snowflake, Candy, Droplet, CupSoda, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useMenu, Offer } from '../context/MenuContext';
 import { MenuCard } from '../components/MenuCard';
@@ -23,7 +23,15 @@ import {
 export function MenuPage() {
   const [searchParams] = useSearchParams();
   const [businessName, setBusinessName] = useState('The Local Cafe');
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'coffee' | 'tea' | 'milkshake' | 'cocktail' | 'food'>('all');
+  const CATEGORY_OPTIONS = [
+    { value: 'coffee', label: 'Coffee', icon: <Coffee className="mr-2 h-3.5 w-3.5" /> },
+    { value: 'cold-coffee-frappe', label: 'Cold Coffee & Frappe', icon: <Snowflake className="mr-2 h-3.5 w-3.5" /> },
+    { value: 'chocolate-drinks', label: 'Chocolate Drinks', icon: <Candy className="mr-2 h-3.5 w-3.5" /> },
+    { value: 'fresh-drinks', label: 'Fresh Drinks', icon: <Droplet className="mr-2 h-3.5 w-3.5" /> },
+    { value: 'soft-drinks', label: 'Soft Drinks', icon: <CupSoda className="mr-2 h-3.5 w-3.5" /> },
+    { value: 'cakes', label: 'Cakes', icon: <span className="mr-2" role="img" aria-label="Cakes">🍰</span> },
+  ];
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'coffee' | 'cold-coffee-frappe' | 'chocolate-drinks' | 'fresh-drinks' | 'soft-drinks' | 'cakes'>('all');
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
   const [currentOfferIndex, setCurrentOfferIndex] = useState(0);
   const [offerImageIndex, setOfferImageIndex] = useState(0);
@@ -289,46 +297,17 @@ export function MenuPage() {
             >
               All
             </Button>
-            <Button
-              variant={selectedCategory === 'coffee' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('coffee')}
-              className={`${categoryButtonBase} ${selectedCategory === 'coffee' ? categoryButtonActive : categoryButtonInactive}`}
-            >
-              <Coffee className="mr-2 h-3.5 w-3.5" />
-              Coffee
-            </Button>
-            <Button
-              variant={selectedCategory === 'tea' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('tea')}
-              className={`${categoryButtonBase} ${selectedCategory === 'tea' ? categoryButtonActive : categoryButtonInactive}`}
-            >
-              <Leaf className="mr-2 h-3.5 w-3.5" />
-              Tea
-            </Button>
-            <Button
-              variant={selectedCategory === 'milkshake' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('milkshake')}
-              className={`${categoryButtonBase} ${selectedCategory === 'milkshake' ? categoryButtonActive : categoryButtonInactive}`}
-            >
-              <IceCream className="mr-2 h-3.5 w-3.5" />
-              Milkshakes
-            </Button>
-            <Button
-              variant={selectedCategory === 'cocktail' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('cocktail')}
-              className={`${categoryButtonBase} ${selectedCategory === 'cocktail' ? categoryButtonActive : categoryButtonInactive}`}
-            >
-              <Martini className="mr-2 h-3.5 w-3.5" />
-              Cocktails
-            </Button>
-            <Button
-              variant={selectedCategory === 'food' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('food')}
-              className={`${categoryButtonBase} ${selectedCategory === 'food' ? categoryButtonActive : categoryButtonInactive}`}
-            >
-              <Utensils className="mr-2 h-3.5 w-3.5" />
-              Food
-            </Button>
+            {CATEGORY_OPTIONS.map(opt => (
+              <Button
+                key={opt.value}
+                variant={selectedCategory === opt.value ? 'default' : 'outline'}
+                onClick={() => setSelectedCategory(opt.value as typeof selectedCategory)}
+                className={`${categoryButtonBase} ${selectedCategory === opt.value ? categoryButtonActive : categoryButtonInactive}`}
+              >
+                {opt.icon}
+                {opt.label}
+              </Button>
+            ))}
           </div>
         </div>
       </header>

@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import multer from 'multer';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import cloudinary from './cloudinary.js';
 
 dotenv.config();
 
@@ -19,63 +21,27 @@ fs.mkdirSync(menuImagesDir, { recursive: true });
 fs.mkdirSync(offerCarouselDir, { recursive: true });
 
 const menuImageUpload = multer({
-  storage: multer.diskStorage({
-    destination: (_req, _file, cb) => cb(null, menuImagesDir),
-    filename: (_req, file, cb) => {
-      const originalExt = path.extname(file.originalname).toLowerCase();
-      const ext = originalExt === '.jpeg' || originalExt === '.jpg' || originalExt === '.png'
-        ? originalExt
-        : file.mimetype === 'image/png'
-          ? '.png'
-          : '.jpg';
-      cb(null, `menu-image-${Date.now()}-${Math.floor(Math.random() * 100000)}${ext}`);
+  storage: new CloudinaryStorage({
+    cloudinary,
+    params: {
+      folder: 'menu-images',
+      allowed_formats: ['jpg', 'jpeg', 'png'],
+      transformation: [{ width: 800, crop: 'limit' }],
     },
   }),
-  limits: {
-    fileSize: 10 * 1024 * 1024,
-  },
-  fileFilter: (_req, file, cb) => {
-    const mimeType = String(file.mimetype || '').toLowerCase();
-    const originalName = String(file.originalname || '');
-    const allowedByMime = new Set(['image/jpeg', 'image/jpg', 'image/png', 'image/pjpeg', 'image/x-png']);
-    const allowedByExt = /\.(jpe?g|png)$/i.test(originalName);
-
-    if (!allowedByMime.has(mimeType) && !allowedByExt) {
-      cb(new Error('Only JPEG and PNG files are allowed'));
-      return;
-    }
-    cb(null, true);
-  },
+  limits: { fileSize: 10 * 1024 * 1024 },
 });
 
 const offerCarouselUpload = multer({
-  storage: multer.diskStorage({
-    destination: (_req, _file, cb) => cb(null, offerCarouselDir),
-    filename: (_req, file, cb) => {
-      const originalExt = path.extname(file.originalname).toLowerCase();
-      const ext = originalExt === '.jpeg' || originalExt === '.jpg' || originalExt === '.png'
-        ? originalExt
-        : file.mimetype === 'image/png'
-          ? '.png'
-          : '.jpg';
-      cb(null, `offer-carousel-${Date.now()}-${Math.floor(Math.random() * 100000)}${ext}`);
+  storage: new CloudinaryStorage({
+    cloudinary,
+    params: {
+      folder: 'offer-carousel',
+      allowed_formats: ['jpg', 'jpeg', 'png'],
+      transformation: [{ width: 1200, crop: 'limit' }],
     },
   }),
-  limits: {
-    fileSize: 10 * 1024 * 1024,
-  },
-  fileFilter: (_req, file, cb) => {
-    const mimeType = String(file.mimetype || '').toLowerCase();
-    const originalName = String(file.originalname || '');
-    const allowedByMime = new Set(['image/jpeg', 'image/jpg', 'image/png', 'image/pjpeg', 'image/x-png']);
-    const allowedByExt = /\.(jpe?g|png)$/i.test(originalName);
-
-    if (!allowedByMime.has(mimeType) && !allowedByExt) {
-      cb(new Error('Only JPEG and PNG files are allowed for carousel'));
-      return;
-    }
-    cb(null, true);
-  },
+  limits: { fileSize: 10 * 1024 * 1024 },
 });
 
 // Middleware
@@ -111,6 +77,33 @@ const pool = mysql.createPool({
 
 let superAdminPass = process.env.SUPER_ADMIN_PASS || 'j12345678A';
 let adminPass = process.env.ADMIN_PASS || 'admin1234';
+
+// On startup, try to load admin/super admin passwords from DB if possible
+async function loadPasswordsFromDB() {
+  try {
+    const connection = await pool.getConnection();
+    const [rows] = await connection.query(
+      `SELECT setting_key, setting_value FROM app_settings WHERE setting_key IN ('security.admin_pass', 'security.super_admin_pass')`
+    );
+    connection.release();
+    if (Array.isArray(rows)) {
+      for (const row of rows) {
+        if (row.setting_key === 'security.admin_pass' && row.setting_value) {
+          adminPass = String(row.setting_value);
+        }
+        if (row.setting_key === 'security.super_admin_pass' && row.setting_value) {
+          superAdminPass = String(row.setting_value);
+        }
+      }
+    }
+    console.log('[Auth] Loaded admin/super admin passwords from DB.');
+  } catch (err) {
+    console.warn('[Auth] Could not load admin/super admin passwords from DB, using env/default. Reason:', err.message);
+  }
+}
+
+// Call the loader at startup (do not block server start)
+loadPasswordsFromDB();
 const VALID_ORDER_STATUSES = new Set(['pending', 'preparing', 'ready', 'completed']);
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 const KONNECT_API_BASE_URL = (process.env.KONNECT_API_BASE_URL || 'https://api.sandbox.konnect.network/api/v2').replace(/\/+$/, '');
@@ -642,13 +635,11 @@ app.post('/api/uploads/menu-image', (req, res) => {
       }
       return res.status(400).json({ error: error.message || 'Failed to upload image' });
     }
-
     if (!req.file) {
       return res.status(400).json({ error: 'Image file is required' });
     }
-
-    const url = `${getRequestBaseUrl(req)}/uploads/menu-images/${req.file.filename}`;
-    return res.status(201).json({ url });
+    // Cloudinary URL is in req.file.path
+    return res.status(201).json({ url: req.file.path });
   });
 });
 
@@ -660,13 +651,11 @@ app.post('/api/uploads/offer-carousel', (req, res) => {
       }
       return res.status(400).json({ error: error.message || 'Failed to upload offer carousel image' });
     }
-
     if (!req.file) {
       return res.status(400).json({ error: 'Carousel image file is required' });
     }
-
-    const url = `${getRequestBaseUrl(req)}/uploads/offer-carousel/${req.file.filename}`;
-    return res.status(201).json({ url });
+    // Cloudinary URL is in req.file.path
+    return res.status(201).json({ url: req.file.path });
   });
 });
 
