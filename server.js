@@ -25,11 +25,15 @@ const menuImageUpload = multer({
     cloudinary,
     params: {
       folder: 'menu-images',
-      allowed_formats: ['jpg', 'jpeg', 'png'],
-      transformation: [{ width: 800, crop: 'limit' }],
+        // Allow all formats
+      // Use optimization instead of transformation if supported
+       transformation: [
+        { width: 1200, crop: 'limit' },
+        { fetch_format: 'auto', quality: 'auto' }
+      ]
     },
   }),
-  limits: { fileSize: 10 * 1024 * 1024 },
+  // No file size limit
 });
 
 const offerCarouselUpload = multer({
@@ -37,11 +41,14 @@ const offerCarouselUpload = multer({
     cloudinary,
     params: {
       folder: 'offer-carousel',
-      allowed_formats: ['jpg', 'jpeg', 'png'],
-      transformation: [{ width: 1200, crop: 'limit' }],
+        // Allow all formats
+      transformation: [
+        { width: 1200, crop: 'limit' },
+        { fetch_format: 'auto', quality: '90' }
+      ],
     },
   }),
-  limits: { fileSize: 10 * 1024 * 1024 },
+  // No file size limit
 });
 
 // Middleware

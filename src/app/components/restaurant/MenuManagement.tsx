@@ -8,7 +8,7 @@ import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import Cropper, { type Area } from 'react-easy-crop';
+// Removed Cropper and Area import
 import { toast } from 'sonner';
 import { api, type ApiMenuAuditLog } from '../../../lib/api';
 
@@ -113,10 +113,7 @@ export function MenuManagement({ language }: MenuManagementProps) {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isPreparingCrop, setIsPreparingCrop] = useState(false);
   const [selectedUploadDataUrl, setSelectedUploadDataUrl] = useState('');
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [resizeWidth, setResizeWidth] = useState(900);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
+  // Removed crop, zoom, resizeWidth, croppedAreaPixels; images will be uploaded as-is
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -131,12 +128,7 @@ export function MenuManagement({ language }: MenuManagementProps) {
   const handleOpenDialog = (item?: MenuItem) => {
     setImageInputMode('url');
     setIsUploadingImage(false);
-    setIsPreparingCrop(false);
     setSelectedUploadDataUrl('');
-    setCrop({ x: 0, y: 0 });
-    setZoom(1);
-    setResizeWidth(900);
-    setCroppedAreaPixels(null);
     if (item) {
       setEditingItem(item);
       setFormData({
@@ -163,33 +155,25 @@ export function MenuManagement({ language }: MenuManagementProps) {
 
   const handleImageFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
-
+    if (!file) return;
     if (!hasAllowedImageFile(file)) {
       toast.error(tx('Only JPEG/PNG files are allowed.', 'Seuls les fichiers JPEG/PNG sont autorises.'));
       event.target.value = '';
       return;
     }
-
-    setIsPreparingCrop(true);
+    setIsUploadingImage(true);
     try {
-      const dataUrl = await readFileAsDataURL(file);
-      setSelectedUploadDataUrl(dataUrl);
-      setCrop({ x: 0, y: 0 });
-      setZoom(1);
-      setResizeWidth(900);
-      setCroppedAreaPixels(null);
-      toast.success(tx('Image ready for crop and resize.', 'Image prete pour recadrage et redimensionnement.'));
+      const uploadedImageUrl = await api.uploadMenuImage(file);
+      setFormData((previous) => ({ ...previous, image: uploadedImageUrl }));
+      toast.success(tx('Image uploaded successfully.', 'Image telechargee avec succes.'));
     } catch (error) {
       const message =
         error instanceof Error && error.message.trim()
           ? error.message
-          : tx('Failed to prepare image.', 'Echec de la preparation de l\'image.');
+          : tx('Failed to upload image.', 'Echec du telechargement de l\'image.');
       toast.error(message);
     } finally {
-      setIsPreparingCrop(false);
+      setIsUploadingImage(false);
       event.target.value = '';
     }
   };
@@ -475,76 +459,7 @@ export function MenuManagement({ language }: MenuManagementProps) {
                       className="bg-white border-zinc-300 text-zinc-900"
                     />
 
-                    {selectedUploadDataUrl && (
-                      <div className="space-y-3 rounded-xl border border-zinc-200 bg-zinc-50 p-3">
-                        <div className="relative h-[600px] overflow-hidden rounded-lg bg-zinc-100">
-                          <Cropper
-                            image={selectedUploadDataUrl}
-                            crop={crop}
-                            zoom={zoom}
-                            aspect={4 / 3}
-                            onCropChange={setCrop}
-                            onZoomChange={setZoom}
-                            onCropComplete={(_area, areaPixels) => setCroppedAreaPixels(areaPixels)}
-                          />
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                          <label className="flex flex-col gap-1">
-                            <span className="text-xs font-medium text-zinc-600">{tx('Zoom', 'Zoom')}</span>
-                            <input
-                              type="range"
-                              min={1}
-                              max={3}
-                              step={0.1}
-                              value={zoom}
-                              onChange={(event) => setZoom(Number(event.target.value))}
-                            />
-                          </label>
-                          <label className="flex flex-col gap-1">
-                            <span className="text-xs font-medium text-zinc-600">{tx('Resize Width', 'Largeur de sortie')}</span>
-                            <Select
-                              value={String(resizeWidth)}
-                              onValueChange={(value) => setResizeWidth(Number(value))}
-                            >
-                              <SelectTrigger className="h-9 bg-white border-zinc-300 text-zinc-900">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent className="bg-white border-zinc-200">
-                                <SelectItem value="600">600px</SelectItem>
-                                <SelectItem value="900">900px</SelectItem>
-                                <SelectItem value="1200">1200px</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </label>
-                        </div>
-
-                        <div className="flex flex-wrap gap-2">
-                          <Button
-                            type="button"
-                            onClick={() => void handleUploadCroppedImage()}
-                            disabled={isUploadingImage}
-                            className="bg-amber-600 hover:bg-amber-700 text-white"
-                          >
-                            {isUploadingImage
-                              ? tx('Uploading...', 'Telechargement...')
-                              : tx('Upload Cropped Image', 'Televerser l\'image recadree')}
-                          </Button>
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => {
-                              setSelectedUploadDataUrl('');
-                              setCroppedAreaPixels(null);
-                            }}
-                            disabled={isUploadingImage}
-                            className="border-zinc-300"
-                          >
-                            {tx('Clear', 'Effacer')}
-                          </Button>
-                        </div>
-                      </div>
-                    )}
+                    {/* Removed cropper, zoom, resize, and upload cropped image UI; images will be uploaded as-is */}
 
                     <p className="text-xs text-zinc-500">
                       {isPreparingCrop
