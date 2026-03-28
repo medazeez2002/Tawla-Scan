@@ -26,11 +26,8 @@ const menuImageUpload = multer({
     params: {
       folder: 'menu-images',
         // Allow all formats
-      // Use optimization instead of transformation if supported
-       transformation: [
-        { width: 1200, crop: 'limit' },
-        { fetch_format: 'auto', quality: 'auto' }
-      ]
+      transformation: [    { fetch_format: 'auto', quality: 'auto:best' }
+          ]
     },
   }),
   // No file size limit
@@ -42,9 +39,7 @@ const offerCarouselUpload = multer({
     params: {
       folder: 'offer-carousel',
         // Allow all formats
-      transformation: [
-        { width: 1200, crop: 'limit' },
-        { fetch_format: 'auto', quality: '90' }
+      transformation: [        { fetch_format: 'auto', quality: 'auto:best' }
       ],
     },
   }),
