@@ -28,7 +28,7 @@ const menuImageUpload = multer({
         // Allow all formats
       transformation: [    
         { fetch_format: 'auto', 
-        quality: 'auto' }
+        quality: 'auto:good' }
           ]
     },
   }),
@@ -43,7 +43,7 @@ const offerCarouselUpload = multer({
         // Allow all formats
       transformation: [       
          { fetch_format: 'auto', 
-          quality: 'auto' }
+          quality: 'auto:best' }
       ],
     },
   }),
